@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COVID-19 Data Analysis Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard">
+        <div class="header">
+            <h1>COVID-19 Data Analysis Dashboard</h1>
+            <p>Comprehensive visualization and insights from global COVID-19 data</p>
+        </div>
+
+        <div class="kpi-section">
+            <div class="kpi-card">
+                <h3>Total Confirmed Case</h3>
+                <div class="kpi-value">2,488,557,655</div>
+                <small>Till 2021-01-15</small>
+            </div>
+            <div class="kpi-card">
+                <h3>Total Death</h3>
+                <div class="kpi-value">101,529,564</div>
+                <small>Till 2021-01-15</small>
+            </div>
+            <div class="kpi-card">
+                <h3>Total Recovery</h3>
+                <div class="kpi-value">1,998,803,757</div>
+                <small>Till 2021-01-15</small>
+            </div>
+            <div class="kpi-card">
+                <h3>Average Recovery rate</h3>
+                <div class="kpi-value">80.31%</div>
+                <small>Global Recovery rate</small>
+            </div>
+            <div class="kpi-card">
+                <h3>Average Mortality rate</h3>
+                <div class="kpi-value">4.07%</div>
+                <small>Global Mortality rate</small>
+            </div>
+            <div class="kpi-card">
+                <h3>Most Effected Country</h3>
+                <div class="kpi-value">India</div>
+            </div>
+            <div class="kpi-card">
+                <h3>Least Effected Country</h3>
+                <div class="kpi-value">Russia</div>
+            </div>
+        </div>
+
+        <div class="charts-grid">
+            <div class="chart-container">
+                <h2 class="chart-title">COVID-19 Cases & Deaths Over Time</h2>
+                <img src="../caseVSdeath.png" class="chart-image" alt="COVID-19 Cases and Deaths Over Time Line Chart">
+            </div>
+            <div class="chart-container">
+                <h2 class="chart-title">Continental Distribution</h2>
+                <img src="../totalConfirmed.png" class="chart-image-small" alt="COVID-19 Cases Share by Continent Pie Chart">
+            </div>
+        </div>
+
+        <!-- Secondary Charts -->
+        <div class="secondary-charts">
+            <div class="chart-container">
+                <h2 class="chart-title">Top 10 Countries by Cases</h2>
+                <img src="../Top10Countries.png" class="chart-image-small" alt="Top 10 Countries by COVID-19 Cases Bar Chart">
+            </div>
+            <div class="chart-container">
+                <h2 class="chart-title">Top 5 effected Country</h2>
+                <img src="../Top5casecountries.png" class="chart-image-small" alt="Daily New Cases Distribution Histogram">
+            </div>
+        </div>
+
+        <div class="single-chart">
+            <div class="chart-container">
+                <h2 class="chart-title">Daily New Cases Distribution</h2>
+                <img src="../dailynewcovidcase.png" class="chart-image-full" alt="Country-wise Case Fatality Rates Bar Chart">
+            </div>
+        </div>
+
+        
+
+        <div class="footer">
+            <p>COVID-19 Data Analysis Dashboard • Built with HTML & CSS </p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Image loading handler
+            const images = document.querySelectorAll('.chart-image, .chart-image-small, .chart-image-full');
+            images.forEach(img => {
+                img.addEventListener('load', function() {
+                    this.style.opacity = '1';
+                });
+                
+                img.addEventListener('error', function() {
+                    this.style.display = 'none';
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'chart-image-error';
+                    errorDiv.textContent = '🖼️ Image not found: ' + this.alt;
+                    this.parentNode.appendChild(errorDiv);
+                });
+            });
+            
+            const kpiCards = document.querySelectorAll('.kpi-card');
+            kpiCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-8px) scale(1.02)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            const insightItems = document.querySelectorAll('.insight-item');
+            insightItems.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+                item.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+                observer.observe(item);
+            });
+        });
+    </script>
+</body>
+</html>
